@@ -22,12 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Dark Mode Toggle
+    // Dark Mode Toggle - default DARK
     const themeToggle = document.getElementById('themeToggle');
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const saved = localStorage.getItem('darkMode');
+    // default true kalau belum pernah set
+    const isDarkInit = saved === null ? true : saved === 'true';
     
     // Set initial state
-    if (isDarkMode) {
+    if (isDarkInit) {
         document.body.classList.add('dark-mode');
         themeToggle.textContent = '🌙';
     } else {
