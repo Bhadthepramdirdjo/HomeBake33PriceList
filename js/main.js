@@ -22,27 +22,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Dark Mode Toggle - default DARK
-    const themeToggle = document.getElementById('themeToggle');
-    const saved = localStorage.getItem('darkMode');
-    // default true kalau belum pernah set
-    const isDarkInit = saved === null ? true : saved === 'true';
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navContainer = document.querySelector('.nav-container');
     
-    // Set initial state
-    if (isDarkInit) {
-        document.body.classList.add('dark-mode');
-        themeToggle.textContent = '🌙';
-    } else {
-        themeToggle.textContent = '☀️';
+    if (hamburger && navContainer) {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isActive = hamburger.classList.toggle('active');
+            navContainer.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+        });
+        
+        // Close menu kalo click nav-link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                navContainer.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu saat klik di luar navbar
+        document.addEventListener('click', function(e) {
+            if (!navContainer.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navContainer.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
     }
-    
-    // Toggle dark mode
-    themeToggle.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDark);
-        themeToggle.textContent = isDark ? '🌙' : '☀️';
-    });
+
+    // Dark mode permanent
+    document.body.classList.add('dark-mode');
 });
 
 // Smooth scroll untuk category cards
